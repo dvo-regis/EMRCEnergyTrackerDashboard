@@ -1,0 +1,131 @@
+<!-- HTML -->
+<div id="highmaps"></div>
+
+<style>
+  #highmaps {
+    height: 500px;
+    min-width: 310px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+  }
+  
+</style>
+<!-- JavaScript -->
+<script src="https://code.highcharts.com/maps/highmaps.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+
+<script>
+  // JavaScript code goes here
+(async () => {
+const topology = await fetch(
+"https://code.highcharts.com/mapdata/countries/ng/ng-all.topo.json"
+).then((response) => response.json());
+
+let data = [
+{ hcKey: ["ng-ab", "ng-im", "ng-an", "ng-en", "ng-eb"], admin1Name: "Enugu EDC", value: 997.812 },
+{ hcKey: ["ng-ri", "ng-ak", "ng-by", "ng-cr"], admin1Name: "Port-Harcourt EDC", value: 149.124 },
+{ hcKey: ["ng-yo", "ng-ad", "ng-bo", "ng-ta"], admin1Name: "Yola EDC", value: 350.143 },
+{ hcKey: ["ng-kt", "ng-ji", "ng-kn"], admin1Name: "Kano EDC", value: 841.537 },
+{ hcKey: ["ng-so", "ng-za", "ng-ke", "ng-kd"], admin1Name: "Kaduna EDC", value: 474.224 },
+{ hcKey: ["ng-ni", "ng-fc", "ng-ko", "ng-na"], admin1Name: "Abuja EDC", value: 793.496 },
+{ hcKey: ["ng-be", "ng-ba", "ng-go", "ng-pl"], admin1Name: "Jos EDC", value: 268.065 },
+{ hcKey: ["ng-on", "ng-ek", "ng-de", "ng-ed"], admin1Name: "Benin EDC", value: 624.488 },
+{ hcKey: ["ng-kw", "ng-os", "ng-og", "ng-oy"], admin1Name: "Ibadan EDC", value: 341.924 },
+{ hcKey: ["ng-la"], admin1Name: "Ikeja EDC", value: 594.718 }
+];
+
+let companyMap = {
+"Port-Harcourt EDC": [],
+"Yola EDC": [],
+"Kano EDC": [],
+"Kaduna EDC": [],
+"Abuja EDC": [],
+"Jos EDC": [],
+"Benin EDC": [],
+"Ikeja EDC": [],
+"Ibadan EDC": [],
+"Enugu EDC": []
+};
+
+data.forEach((state) => {
+company = state.admin1Name;
+if (companyMap.hasOwnProperty(company)) {
+companyMap[company].push(...state.hcKey);
+}
+});
+
+
+let combinedData = Object.keys(companyMap).reduce((result, company) => {
+  result.push(
+    ...companyMap[company].map((hcKey) => {
+      let matchingData = data.find((item) => item.hcKey.includes(hcKey));
+      return {
+        "hc-key": hcKey,
+        value: matchingData.value,
+        name: matchingData.admin1Name,
+        company: company,
+      };
+    })
+  );
+  return result;
+}, []);
+
+let uniqueNames = [...new Set(combinedData.map((item) => item.name))].map((name) => ({ name }));
+
+
+const map = Highcharts.mapChart("highmaps", {
+chart: {
+map: topology
+},
+title: {
+text: "Distribution Companies in Nigeria"
+},
+subtitle: {
+text: 'Source map: <a href="https://code.highcharts.com/mapdata/countries/ng/ng-all.topo.json">Nigeria</a>'
+},
+mapNavigation: {
+enabled: true,
+buttonOptions: {
+verticalAlign: "bottom"
+}
+},
+colorAxis: {
+min: 0
+},
+
+series: [{
+name: company,
+data: combinedData,
+states: {
+hover: {
+color: "#BADA55"
+}
+},
+dataLabels: {
+enabled: true,
+format: "{point.name}"
+}
+}],
+events: {
+load: function () {
+this.series[0].points.forEach((point) => {
+if (companyMap[point.name].includes(point.properties["hc-key"])) {
+point.update({
+color: "blue"
+});
+}
+});
+}
+}
+});
+})();
+</script>
+
+
