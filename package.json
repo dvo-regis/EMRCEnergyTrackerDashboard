@@ -1,0 +1,25 @@
+{
+  "name": "emrc--energy-perfomance-tracker.0",
+  "version": "1.0.0",
+  "description": "EMRC Energy Performance Dashboard to track values across Nigeria.",
+  "main": "index.js",
+  "scripts": {
+    "test": "run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dvo-regis/EMRCEnergyTrackerDashboard.git"
+  },
+  "keywords": [
+    "Dashboard"
+  ],
+  "author": "Fortune Regis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dvo-regis/EMRCEnergyTrackerDashboard/issues"
+  },
+  "homepage": "https://github.com/dvo-regis/EMRCEnergyTrackerDashboard#readme",
+  "dependencies": {
+    "mongodb": "^5.7.0"
+  }
+}
