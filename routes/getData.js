@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const connectToDatabase = require('../db');
+const connectToDatabase = require('../server');
 
 // Endpoint for getting data
 router.get('/', async (req, res) => {
