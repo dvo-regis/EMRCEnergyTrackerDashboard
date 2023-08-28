@@ -2,7 +2,7 @@ const express = require('express');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
 // MongoDB connection URI and client options
-const uri = "mongodb+srv://fortuneregis:Emrc2023@emrctracker.p0xgiv4.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://fortuneregis:Emrc2023@emrctracker.p0xgiv4.mongodb.net/test";
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
